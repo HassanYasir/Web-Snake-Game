@@ -4,7 +4,7 @@ const foodSound = new Audio('music/food.mp3');
 const gameOverSound = new Audio('music/gameover.mp3');
 const moveSound = new Audio('music/move.mp3');
 const musicSound = new Audio('music/music.mp3');
-let speed = 7;
+let speed = 4;
 let score = 0;
 let isRunning = false;
 let gameEnd = false;
@@ -289,7 +289,7 @@ function gameEngine() {
           }
           if (
             tailRowStyle === bodyRowStyle &&
-            parseInt(Lastbox.style["grid-column-start"]) ===
+            parseInt(tailColumnStyle) ===
               parseInt(boxes[boxes.length - 2].style["grid-column-start"]) - 1 &&
             inputDir.position === "up"
           ) {
@@ -297,7 +297,7 @@ function gameEngine() {
           }
           if (
             tailRowStyle === bodyRowStyle &&
-            parseInt(Lastbox.style["grid-column-start"]) ===
+            parseInt(tailColumnStyle) ===
               parseInt(boxes[boxes.length - 2].style["grid-column-start"]) + 1 &&
             inputDir.position === "down"
           ) {
@@ -311,7 +311,7 @@ function gameEngine() {
             Lastbox.style.transform = "rotate(180deg)";
           }
           if (
-            parseInt(Lastbox.style["grid-row-start"]) ===
+            parseInt(tailRowStyle) ===
               parseInt(boxes[boxes.length - 2].style["grid-row-start"]) + 1 &&
             parseInt(boxes[0].style["grid-row-start"]) ===
               parseInt(head.style["grid-row-start"]) - 1
@@ -319,7 +319,7 @@ function gameEngine() {
             Lastbox.style.transform = "rotate(360deg)";
           }
           if (
-            parseInt(Lastbox.style["grid-column-start"]) ===
+            parseInt(tailColumnStyle) ===
               parseInt(boxes[boxes.length - 2].style["grid-column-start"]) - 1 &&
             parseInt(boxes[0].style["grid-column-start"]) ===
               parseInt(head.style["grid-column-start"]) + 1
@@ -327,7 +327,7 @@ function gameEngine() {
             Lastbox.style.transform = "rotate(90deg)";
           }
           if (
-            parseInt(Lastbox.style["grid-column-start"]) ===
+            parseInt(tailColumnStyle) ===
               parseInt(boxes[boxes.length - 2].style["grid-column-start"]) + 1 &&
             parseInt(boxes[0].style["grid-column-start"]) ===
               parseInt(head.style["grid-column-start"]) - 1

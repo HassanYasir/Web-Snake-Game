@@ -1,6 +1,10 @@
 # Snake Game on Web
+<span>
+<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_preview.png' alt='game-view' width='450'  align='center'/>
+<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_ending.png' alt='game-view' width='450'  align='center'/>
+</span>
 
-<img src='https://raw.githubusercontent.com/HassanYasir/Memory_game/refs/heads/main/Readme_content/game_view.png' alt='game-view' width='650'  align='center'/>
+
 
 **Welcome to the Web-Based Snake Game! This project is a classic implementation of the Snake game, where players control a snake to collect food while avoiding collisions with the walls and itself..**
 

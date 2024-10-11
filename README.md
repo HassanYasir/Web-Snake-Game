@@ -26,7 +26,7 @@ __Technologies Used__
 Clone the repository:
 
 ```bash
-git clone https://github.com/HassanYasir/match-image-game.git
+https://github.com/HassanYasir/Web-Snake-Game.git
 ```
 
 Open  ` index.html` in your web browser.

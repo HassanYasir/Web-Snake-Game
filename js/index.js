@@ -242,13 +242,13 @@ const showEndingPopup = ()=>{
         
         console.log(item.getAttribute("src"));
         switch(item.getAttribute("src")){
-          case "/img/turtle.png":
+          case "./img/turtle.png":
             localStorage.setItem("Speed", 3);
             break;
-          case "/img/rabbit.png":
+          case "./img/rabbit.png":
             localStorage.setItem("Speed", 6);
             break;
-          case "/img/cheetah.png":
+          case "./img/cheetah.png":
             localStorage.setItem("Speed", 9);
             break;
             

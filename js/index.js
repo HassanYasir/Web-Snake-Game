@@ -352,7 +352,7 @@ function gameEngine() {
             snakeElement.classList.add('head');
             if(localStorage.getItem("Snake")){
               let opt = localStorage.getItem("Snake")
-              snakeElement.style.backgroundImage = `url("..${opt}")`;
+              snakeElement.style.backgroundImage = `url(".${opt}")`;
     
             }
         }

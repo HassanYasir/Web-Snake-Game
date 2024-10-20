@@ -4,22 +4,41 @@ const foodSound = new Audio('music/food.mp3');
 const gameOverSound = new Audio('music/gameover.mp3');
 const moveSound = new Audio('music/move.mp3');
 const musicSound = new Audio('music/music.mp3');
+
+// locic for setting speed according to localstorage data
+let pause = false;
 let speed = 6;
+if(localStorage.getItem("Speed")){
+  speed = localStorage.getItem("Speed");
+}
 let score = 0;
 let isRunning = false;
 let gameEnd = false;
 let hiscoreval;
 let modal = document.getElementsByTagName("dialog")[0];
 let lastPaintTime = 0;
-let snakeArr = [
-    { x: 13, y: 15 }
-];
+
+
 
 let food = { x: 6, y: 7 };
 let boardBody = document.getElementById("board");
 
-// Game Functions
+const gridComputedStyle = window.getComputedStyle(boardBody);
 
+// get number of grid rows
+const gridRowCount = gridComputedStyle.getPropertyValue("grid-template-rows").split(" ").length;
+
+// get number of grid columns
+const gridColumnCount = gridComputedStyle.getPropertyValue("grid-template-columns").split(" ").length;
+
+console.log(gridRowCount, gridColumnCount);
+
+
+let snakeArr = [
+  {x: gridRowCount-3, y: gridRowCount-2}
+];
+
+// Game Functions
 
 
 
@@ -37,7 +56,7 @@ function main(ctime) {
 
 // for touch controles
 let startX, startY, endX, endY;
-const threshold = 30; // Minimum distance to consider a swipe
+const threshold = 6 // Minimum distance to consider a swipe
 function touchStartHandler(e) {
   const touch = e.touches[0];
   startX = touch.pageX;
@@ -90,19 +109,166 @@ const showEndingPopup = ()=>{
     
     
     modal.showModal();
-    
+    pause = true;
     let playButton = document.getElementById("play");
     let exitButton = document.getElementById("exit");
+    let selectButton = document.getElementById("select");
     playButton.addEventListener("click",()=>{
         modal.close();
         window.location.reload();
         
     });
+
+
+    selectButton.addEventListener("click",()=>{
+      let targetBox = document.getElementById("preview");
+      targetBox.innerHTML = `<div class="selectBox">
+                              <div class="tittle"><p>Setting</p></div>
+                              <div class="setting-container">
+                              <div class="heading"><p>Select Snake</p></div>
+                              <div class="snake-select">
+                                <img src="/img/snake-head.svg" class="selection-img" alt="snake-01">
+                                <img src="/img/snake-head-green.svg" class="selection-img" alt="snake-02">
+                                <img src="/img/snake-head-red.svg" class="selection-img" alt="snake-03">
+                                <div class="line"></div>
+                              </div>
+                              <div class="heading"><p>Select Speed</p></div>
+                              <div class="speed-select">
+                                <img src="/img/turtle.png" class="selection-img w-16" alt="snake-01">
+                                <img src="/img/rabbit.png" class="selection-img w-16" alt="snake-02">
+                                <img src="/img/cheetah.png" class="selection-img w-16" alt="snake-03">
+                                <div class="line2"></div>
+                              </div>
+                              <button id="store-btn">Select</button>
+                              </div>
+                              </div>`
     
+    let SnakeBox = "";                          
+    let SpeedBox = "";                          
+    localStorage.getItem("Snake")?SnakeBox=localStorage.getItem("Snake"):SnakeBox="";
+    localStorage.getItem("Speed")?SpeedBox=localStorage.getItem("Speed"):SpeedBox="";
+    
+
+      
+    let selectSnake = document.querySelector(".snake-select");
+    let selectSpeed = document.querySelector(".speed-select");
+    let line1 = document.querySelector(".line");
+    let line2 = document.querySelector(".line2");
+
+    line1.style.height = `${line1.getBoundingClientRect().width}px`;
+    line2.style.height = `${line2.getBoundingClientRect().width}px`;
+    
+    switch(SnakeBox){
+      case "/img/snake-head.svg":
+        line1.style.left = "23.8%";
+        line1.style.right = "";
+        break;
+      case "/img/snake-head-green.svg":
+        line1.style.right = "";
+        line1.style.left = "";
+        break;
+      case "/img/snake-head-red.svg":
+        line1.style.right = "23.8%";
+        line1.style.left = "";
+        break;
+      case "":
+        line1.style.left = "23.8%";
+        line1.style.right = "";
+        break;
+    }
+    switch(SpeedBox){
+      case "3":
+        line2.style.left = "27.6%";
+        line2.style.right = "";
+        break;
+      case "6":
+        line2.style.right = "";
+        line2.style.left = "";
+        break;
+      case "9":
+        line2.style.right = "27.6%";
+        line2.style.left = "";
+        break;
+    }
+
+    selectSnake.addEventListener("click",(elem)=>{
+
+      let btn = document.getElementById("store-btn");
+      let item = elem.target;
+      
+      switch(item.getAttribute("alt")){
+        case "snake-01":
+          line1.style.left = "23.8%";
+          line1.style.right = "";
+          break;
+        case "snake-02":
+          line1.style.right = "";
+          line1.style.left = "";
+          break;
+        case "snake-03":
+          line1.style.right = "23.8%";
+          line1.style.left = "";
+          break;
+
+      }
+      
+      btn.addEventListener("click",()=>{
+        
+        localStorage.setItem("Snake", item.getAttribute("src"));
+      });
+    });
+    selectSpeed.addEventListener("click",(elem)=>{
+
+      let btn = document.getElementById("store-btn");
+      let item = elem.target;
+
+      switch(item.getAttribute("alt")){
+        case "snake-01":
+          line2.style.left = "27.6%";
+          line2.style.right = "";
+          break;
+        case "snake-02":
+          line2.style.right = "";
+          line2.style.left = "";
+          break;
+        case "snake-03":
+          line2.style.right = "27.6%";
+          line2.style.left = "";
+          break;
+
+      }
+
+      btn.addEventListener("click",()=>{
+        
+        console.log(item.getAttribute("src"));
+        switch(item.getAttribute("src")){
+          case "/img/turtle.png":
+            localStorage.setItem("Speed", 3);
+            break;
+          case "/img/rabbit.png":
+            localStorage.setItem("Speed", 6);
+            break;
+          case "/img/cheetah.png":
+            localStorage.setItem("Speed", 9);
+            break;
+            
+
+        }
+      });
+    });
+
+
+      
+  });
     exitButton.addEventListener("click",()=>{
 
         window.close();
     });
+}
+
+// for generating random values
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
@@ -112,12 +278,14 @@ function isCollide(snake) {
     for (let i = 1; i < snakeArr.length; i++) {
         if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
             isRunning = false;
+            
             return true;
         }
     }
     // If you bump into the wall
-    if (snake[0].x >= 18 || snake[0].x <= 0 || snake[0].y >= 18 || snake[0].y <= 0) {
+    if (snake[0].x >= gridRowCount || snake[0].x <= 0 || snake[0].y >= gridRowCount || snake[0].y <= 0) {
         isRunning = false;
+        console.log("crashed",snake[0].x,snake[0].y);
         return true;
     }
 
@@ -131,13 +299,13 @@ function gameEngine() {
     if (isCollide(snakeArr)) {
         
         inputDir = { x: 0, y: 0 };
-        snakeArr = [{ x: 13, y: 15 }];
+        snakeArr = [{ x: gridRowCount-3, y: gridRowCount-2}];
         gameEnd = true;
         
         score = 0;
         scoreBox.innerHTML =  score;
         gameOverSound.play();
-        // alert("Game Over. Press any key to play again!");
+        
         boardBody.removeEventListener('touchstart', touchStartHandler);
         boardBody.removeEventListener('touchend',touchEndHandler);
         showEndingPopup();
@@ -147,28 +315,29 @@ function gameEngine() {
     if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
         foodSound.play();
         score += 1;
+        scoreBox.innerHTML =  score;
         if (score > hiscoreval) {
             hiscoreval = score;
             localStorage.setItem("hiscore", JSON.stringify(hiscoreval));
             hiscoreBox.innerHTML = hiscoreval;
         }
-        scoreBox.innerHTML =  score;
         snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
-        let a = 2;
-        let b = 16;
-        food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(a + (b - a) * Math.random()) }
+        let m = 4;
+        let max = gridColumnCount-m;
+        food = { x: getRandomInt(m, max), y: getRandomInt(m, max) }
     }
 
     // Moving the snake
-    
-
-    for (let i = snakeArr.length - 2; i >= 0; i--) {
-      isRunning = true;
-      snakeArr[i + 1] = { ...snakeArr[i] };
-
+    if(!pause){
+      
+      for (let i = snakeArr.length - 2; i >= 0; i--) {
+        snakeArr[i + 1] = { ...snakeArr[i] };
+        isRunning = true;
+  
+      }
+      snakeArr[0].x += inputDir.x;
+      snakeArr[0].y += inputDir.y;
     }
-    snakeArr[0].x += inputDir.x;
-    snakeArr[0].y += inputDir.y;
 
     // Part 2: Display the snake and Food
     // Display the snake
@@ -181,14 +350,36 @@ function gameEngine() {
 
         if (index === 0) {
             snakeElement.classList.add('head');
+            if(localStorage.getItem("Snake")){
+              let opt = localStorage.getItem("Snake")
+              snakeElement.style.backgroundImage = `url("..${opt}")`;
+    
+            }
         }
 
         else {
             snakeElement.classList.add('snake');
+            if(localStorage.getItem("Snake")){
+              let opt = localStorage.getItem("Snake")
+              switch(opt){
+                case "/img/snake-head.svg":
+                  snakeElement.style.backgroundColor = "#5876ba";
+                  break;
+                case "/img/snake-head-red.svg":
+                  snakeElement.style.backgroundColor = "#D21404";
+                  break;
+                case "/img/snake-head-green.svg":
+                  snakeElement.style.backgroundColor = "#00a76b";
+                  break;
+              }
+    
+            }
 
         }
         
         // logic for snake turning effect
+
+        
         
         board.appendChild(snakeElement);
 
@@ -250,6 +441,9 @@ function gameEngine() {
     foodElement.style.gridColumnStart = food.x;
     foodElement.classList.add('food');
     board.appendChild(foodElement);
+
+    // logic for handling sanke head and tail
+    
     let boxes = snakeArr.length>=2?document.querySelectorAll(".snake"):["",""];
     let Lastbox = boxes[boxes.length -1];
     Lastbox != ""?Lastbox.classList.add("tail"):Lastbox;
@@ -380,25 +574,30 @@ function handleControl(key){
         break;
 
     case "ArrowRight":
+      
 
         inputDir.x = 1;
         inputDir.y = 0;
         inputDir.position = "right";
         break;
     default:
-        inputDir = { x: 0, y: 0, position: "" };
+        inputDir = { x: 0, y: -1, position: "up" };
 
         break;
-}
+  }
+  
 
 }
 
 window.requestAnimationFrame(main);
 window.addEventListener('keydown', e => {
-    inputDir = { x: 0, y: 1 } // Start the game
-    moveSound.play();
-    
-    handleControl(e.key)
+    if(!pause){
+      
+      inputDir = { x: 0, y: 1 } // Start the game
+      moveSound.play();
+      
+      handleControl(e.key)
+    }
     
 
 });

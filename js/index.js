@@ -159,15 +159,15 @@ const showEndingPopup = ()=>{
     line2.style.height = `${line2.getBoundingClientRect().width}px`;
     
     switch(SnakeBox){
-      case "/img/snake-head.svg":
+      case "./img/snake-head.svg":
         line1.style.left = "23.8%";
         line1.style.right = "";
         break;
-      case "/img/snake-head-green.svg":
+      case "./img/snake-head-green.svg":
         line1.style.right = "";
         line1.style.left = "";
         break;
-      case "/img/snake-head-red.svg":
+      case "./img/snake-head-red.svg":
         line1.style.right = "23.8%";
         line1.style.left = "";
         break;
@@ -352,7 +352,7 @@ function gameEngine() {
             snakeElement.classList.add('head');
             if(localStorage.getItem("Snake")){
               let opt = localStorage.getItem("Snake")
-              snakeElement.style.backgroundImage = `url(".${opt}")`;
+              snakeElement.style.backgroundImage = `url("${opt}")`;
     
             }
         }
@@ -362,13 +362,13 @@ function gameEngine() {
             if(localStorage.getItem("Snake")){
               let opt = localStorage.getItem("Snake")
               switch(opt){
-                case "/img/snake-head.svg":
+                case "./img/snake-head.svg":
                   snakeElement.style.backgroundColor = "#5876ba";
                   break;
-                case "/img/snake-head-red.svg":
+                case "./img/snake-head-red.svg":
                   snakeElement.style.backgroundColor = "#D21404";
                   break;
-                case "/img/snake-head-green.svg":
+                case "./img/snake-head-green.svg":
                   snakeElement.style.backgroundColor = "#00a76b";
                   break;
               }

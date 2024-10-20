@@ -127,16 +127,16 @@ const showEndingPopup = ()=>{
                               <div class="setting-container">
                               <div class="heading"><p>Select Snake</p></div>
                               <div class="snake-select">
-                                <img src="./img/snake-head.svg" class="selection-img" alt="snake-01">
-                                <img src="./img/snake-head-green.svg" class="selection-img" alt="snake-02">
-                                <img src="./img/snake-head-red.svg" class="selection-img" alt="snake-03">
+                                <img src="./img/snake-head.svg" class="selection-img" loading="lazy" alt="snake-01">
+                                <img src="./img/snake-head-green.svg" class="selection-img" loading="lazy" alt="snake-02">
+                                <img src="./img/snake-head-red.svg" class="selection-img" loading="lazy" alt="snake-03">
                                 <div class="line"></div>
                               </div>
                               <div class="heading"><p>Select Speed</p></div>
                               <div class="speed-select">
-                                <img src="./img/turtle.png" class="selection-img w-16" alt="snake-01">
-                                <img src="./img/rabbit.png" class="selection-img w-16" alt="snake-02">
-                                <img src="./img/cheetah.png" class="selection-img w-16" alt="snake-03">
+                                <img src="./img/turtle.png" class="selection-img w-16" loading="lazy" alt="snake-01">
+                                <img src="./img/rabbit.png" class="selection-img w-16" loading="lazy" alt="snake-02">
+                                <img src="./img/cheetah.png" class="selection-img w-16" loading="lazy" alt="snake-03">
                                 <div class="line2"></div>
                               </div>
                               <button id="store-btn">Select</button>

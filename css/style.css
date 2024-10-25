@@ -155,6 +155,9 @@ dialog::backdrop{
 .selectBox{
     background-color: #444;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3.8%;
     height: 293px;
     color: #E7F5F8;
     font-family: Arial, Helvetica, sans-serif; 
@@ -171,11 +174,13 @@ dialog::backdrop{
 
 .setting-container{
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     /* background-color: #fff; */
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    justify-content: center;
+ 
+ 
 }
 .heading{
     font-size: 1.1rem;
@@ -202,7 +207,7 @@ dialog::backdrop{
     width: 14%;
 }
 
-.setting-container button{
+.selectBox button{
     width: 97%;
     margin-inline:auto;
     background-color: #F8A300;
@@ -214,7 +219,7 @@ dialog::backdrop{
     font-weight: 600;
 
 }
-.setting-container button:hover{
+.selectBox button:hover{
     background-color: #F4C500;
     color: #eaeeef;
     cursor: pointer;
@@ -261,8 +266,7 @@ dialog::backdrop{
     position: absolute;
 	
 
-	top: 15%;
-	/* bottom: 0; */
+	top: 16.5%;
     /* right: 23.8%; */
     /* left: 23.8%; */
 	z-index: 0;
@@ -273,7 +277,7 @@ dialog::backdrop{
 }
 .line2{
     position: absolute;
-	top: 38%;
+	top: 38.3%;
     /* right: 27.6%; */
     /* left: 27.6%; */
 	z-index: 0;
@@ -318,6 +322,16 @@ dialog::backdrop{
         margin-left: auto;
         transform: translateX(-6%);
     
+    }
+    .selectBox{
+        gap: 1.1rem;
+    }
+    .line{
+        top: 20%;
+        width: 16.5%;
+    }
+    .line2{
+        top: 40.5%;
     }
 }
 

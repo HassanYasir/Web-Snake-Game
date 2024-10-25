@@ -106,8 +106,47 @@ function handleSwipe() {
 
 // function for showing ending menue
 const showEndingPopup = ()=>{
-    
-    
+
+  let snakeSelectionPos = {
+    left:23.8,
+    right:23.8
+  };
+  let speedSelectionPos = {
+    left:27.6,
+    right:27.6
+  };
+  if(window.innerWidth <= 740){
+    speedSelectionPos = {
+      left:30.6,
+      right:20.6
+    };
+    snakeSelectionPos = {
+      left:26,
+      right:16.8
+    };
+  }
+  // function for handling selection of setting items eg snake and speed
+  function handleSelection(elem,mycase,selection,left,right){
+    switch(elem){
+      case mycase[0]:
+        selection.style.left = `${left}%`;
+        selection.style.right = "";
+        break;
+      case mycase[1]:
+        selection.style.right = "";
+        selection.style.left = "";
+        break;
+      case mycase[2]:
+        selection.style.right = `${right}%`;
+        selection.style.left = "";
+        break;
+      case "":
+        selection.style.left = `${right}%`;
+        selection.style.right = "";
+        break;
+    }
+  }
+
     modal.showModal();
     pause = true;
     let playButton = document.getElementById("play");
@@ -123,8 +162,8 @@ const showEndingPopup = ()=>{
     selectButton.addEventListener("click",()=>{
       let targetBox = document.getElementById("preview");
       targetBox.innerHTML = `<div class="selectBox">
-                              <div class="tittle"><p>Setting</p></div>
-                              <div class="setting-container">
+                              <div class="tittle"><p><span style="margin-right:6px"><i class="fa-duotone fa-solid fa-gear"></i></span>Setting</p></div>
+                              
                               <div class="heading"><p>Select Snake</p></div>
                               <div class="snake-select">
                                 <img src="./img/snake-head.svg" class="selection-img" loading="lazy" alt="snake-01">
@@ -140,7 +179,7 @@ const showEndingPopup = ()=>{
                                 <div class="line2"></div>
                               </div>
                               <button id="store-btn">Select</button>
-                              </div>
+                              
                               </div>`
     
     let SnakeBox = "";                          
@@ -157,60 +196,18 @@ const showEndingPopup = ()=>{
 
     line1.style.height = `${line1.getBoundingClientRect().width}px`;
     line2.style.height = `${line2.getBoundingClientRect().width}px`;
-    
-    switch(SnakeBox){
-      case "./img/snake-head.svg":
-        line1.style.left = "23.8%";
-        line1.style.right = "";
-        break;
-      case "./img/snake-head-green.svg":
-        line1.style.right = "";
-        line1.style.left = "";
-        break;
-      case "./img/snake-head-red.svg":
-        line1.style.right = "23.8%";
-        line1.style.left = "";
-        break;
-      case "":
-        line1.style.left = "23.8%";
-        line1.style.right = "";
-        break;
-    }
-    switch(SpeedBox){
-      case "3":
-        line2.style.left = "27.6%";
-        line2.style.right = "";
-        break;
-      case "6":
-        line2.style.right = "";
-        line2.style.left = "";
-        break;
-      case "9":
-        line2.style.right = "27.6%";
-        line2.style.left = "";
-        break;
-    }
+    let snakeCaseArr = ["./img/snake-head.svg","./img/snake-head-green.svg","./img/snake-head-red.svg"];
+    let speedCaseArr = ["3","6","9"];
+    handleSelection(SnakeBox,snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
+    handleSelection(SpeedBox,speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
 
     selectSnake.addEventListener("click",(elem)=>{
 
       let btn = document.getElementById("store-btn");
       let item = elem.target;
+      let snakeCaseArr = ["snake-01","snake-02","snake-03"];
       
-      switch(item.getAttribute("alt")){
-        case "snake-01":
-          line1.style.left = "23.8%";
-          line1.style.right = "";
-          break;
-        case "snake-02":
-          line1.style.right = "";
-          line1.style.left = "";
-          break;
-        case "snake-03":
-          line1.style.right = "23.8%";
-          line1.style.left = "";
-          break;
-
-      }
+      handleSelection(item.getAttribute("alt"),snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
       
       btn.addEventListener("click",()=>{
         
@@ -221,22 +218,9 @@ const showEndingPopup = ()=>{
 
       let btn = document.getElementById("store-btn");
       let item = elem.target;
-
-      switch(item.getAttribute("alt")){
-        case "snake-01":
-          line2.style.left = "27.6%";
-          line2.style.right = "";
-          break;
-        case "snake-02":
-          line2.style.right = "";
-          line2.style.left = "";
-          break;
-        case "snake-03":
-          line2.style.right = "27.6%";
-          line2.style.left = "";
-          break;
-
-      }
+      let speedCaseArr = ["snake-01","snake-02","snake-03"];
+      
+      handleSelection(item.getAttribute("alt"),speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
 
       btn.addEventListener("click",()=>{
         

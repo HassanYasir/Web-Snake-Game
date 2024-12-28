@@ -131,11 +131,11 @@ const showEndingPopup = ()=>{
   if(window.innerWidth <= 740){
     speedSelectionPos = {
       left:30.6,
-      right:20.6
+      right:18
     };
     snakeSelectionPos = {
       left:26,
-      right:16.8
+      right:13.7
     };
   }
   // function for handling selection of setting items eg snake and speed
@@ -181,6 +181,7 @@ const showEndingPopup = ()=>{
       let targetBox = document.getElementById("preview");
       targetBox.innerHTML = `<div class="selectBox">
                               <div class="tittle"><p><span style="margin-right:6px"><i class="fa-duotone fa-solid fa-gear"></i></span>Setting</p></div>
+                              <div class="items-container">
                               
                               <div class="heading"><p>Select Snake</p></div>
                               <div class="snake-select">
@@ -197,7 +198,7 @@ const showEndingPopup = ()=>{
                                 <div class="line2"></div>
                               </div>
                               
-                              
+                              </div>
                               </div>`
     
     let SnakeBox = "";                          

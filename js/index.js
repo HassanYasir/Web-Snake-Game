@@ -40,6 +40,19 @@ let snakeArr = [
 
 // Game Functions
 
+const showPopUp = (mesg) =>{
+  let parentElem = document.getElementsByTagName("dialog")[0];
+  let element = document.createElement("div");
+  element.setAttribute("id","msg-popup");
+  element.innerHTML = `<p class="msg">${mesg}</p>`
+
+  parentElem.appendChild(element);
+  setTimeout(()=>{
+    parentElem.removeChild(element);
+  },1200);
+  
+
+}
 
 
 function main(ctime) {
@@ -146,8 +159,13 @@ const showEndingPopup = ()=>{
         break;
     }
   }
+  function saveSettings(item,setting){
+    localStorage.setItem(item, setting);
+    showPopUp(`item selected and setting saved `);
+  }
 
     modal.showModal();
+    showPopUp("hello to you");
     pause = true;
     let playButton = document.getElementById("play");
     let exitButton = document.getElementById("exit");
@@ -178,7 +196,7 @@ const showEndingPopup = ()=>{
                                 <img src="./img/cheetah.png" class="selection-img w-16" loading="lazy" alt="snake-03">
                                 <div class="line2"></div>
                               </div>
-                              <button id="store-btn">Select</button>
+                              
                               
                               </div>`
     
@@ -203,42 +221,36 @@ const showEndingPopup = ()=>{
 
     selectSnake.addEventListener("click",(elem)=>{
 
-      let btn = document.getElementById("store-btn");
+      
       let item = elem.target;
       let snakeCaseArr = ["snake-01","snake-02","snake-03"];
       
       handleSelection(item.getAttribute("alt"),snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
       
-      btn.addEventListener("click",()=>{
-        
-        localStorage.setItem("Snake", item.getAttribute("src"));
-      });
+      saveSettings("Snake",item.getAttribute("src"));
     });
     selectSpeed.addEventListener("click",(elem)=>{
 
       let btn = document.getElementById("store-btn");
       let item = elem.target;
       let speedCaseArr = ["snake-01","snake-02","snake-03"];
+      let speedSetting = 6;
       
       handleSelection(item.getAttribute("alt"),speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
+      switch(item.getAttribute("src")){
+        case "./img/turtle.png":
+          speedSetting = 3;
+          break;
+        case "./img/rabbit.png":
+          speedSetting = 6;
+          break;
+        case "./img/cheetah.png":
+          speedSetting = 9;
+          break;
+          
 
-      btn.addEventListener("click",()=>{
-        
-        console.log(item.getAttribute("src"));
-        switch(item.getAttribute("src")){
-          case "./img/turtle.png":
-            localStorage.setItem("Speed", 3);
-            break;
-          case "./img/rabbit.png":
-            localStorage.setItem("Speed", 6);
-            break;
-          case "./img/cheetah.png":
-            localStorage.setItem("Speed", 9);
-            break;
-            
-
-        }
-      });
+      }
+      saveSettings("Speed",speedSetting);
     });
 
 

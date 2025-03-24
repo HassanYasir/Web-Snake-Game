@@ -5,8 +5,21 @@ const gameOverSound = new Audio('music/gameover.mp3');
 const moveSound = new Audio('music/move.mp3');
 const musicSound = new Audio('music/music.mp3');
 
+// DOM elements variables
+
+let hiscoreBox = document.getElementById("hiscoreBox");
+let scoreBox = document.getElementById("scoreBox");
+
+// importing functions from files
+
+import {pause,showEndingPopup} from './popup.js';
+
+// variables diclearations
+let snakeElement;
+let foodElement;
+
 // locic for setting speed according to localstorage data
-let pause = false;
+
 let speed = 6;
 if(localStorage.getItem("Speed")){
   speed = localStorage.getItem("Speed");
@@ -15,7 +28,7 @@ let score = 0;
 let isRunning = false;
 let gameEnd = false;
 let hiscoreval;
-let modal = document.getElementsByTagName("dialog")[0];
+
 let lastPaintTime = 0;
 
 
@@ -40,19 +53,107 @@ let snakeArr = [
 
 // Game Functions
 
-const showPopUp = (mesg) =>{
-  let parentElem = document.getElementsByTagName("dialog")[0];
-  let element = document.createElement("div");
-  element.setAttribute("id","msg-popup");
-  element.innerHTML = `<p class="msg">${mesg}</p>`
+function handleControl(key){
+  switch (key) {
 
-  parentElem.appendChild(element);
-  setTimeout(()=>{
-    parentElem.removeChild(element);
-  },1200);
+    case "ArrowUp":
+        
+        inputDir.x = 0;
+        inputDir.y = -1;
+        inputDir.position = "up";
+
+        break;
+
+    case "ArrowDown":
+
+        inputDir.x = 0;
+        inputDir.y = 1;
+        inputDir.position = "down";
+        break;
+
+    case "ArrowLeft":
+
+        inputDir.x = -1;
+        inputDir.y = 0;
+        inputDir.position = "left";
+        break;
+
+    case "ArrowRight":
+      
+
+        inputDir.x = 1;
+        inputDir.y = 0;
+        inputDir.position = "right";
+        break;
+    default:
+        inputDir = { x: 0, y: -1, position: "up" };
+
+        break;
+  }
   
 
 }
+
+
+
+function changeTailDir(box,positionX,positionY){
+  if(positionX > 0 ){
+    box.style.transform = "rotate(270deg)";
+  }
+  if(positionX < 0 ){
+    box.style.transform = "rotate(90deg)";
+  }
+  if(positionY > 0 ){
+    box.style.transform = "rotate(360deg)";
+  }
+  if(positionY < 0 ){
+    box.style.transform = "rotate(-180deg)";
+  }
+}
+
+
+function changeHeadDir(head,boxes){
+  if(!(boxes.length >= 2)){
+    switch(inputDir.position){
+      case "up":
+        head.style.transform = 'rotate(-90deg)';
+        break;
+      case "down":
+        head.style.transform = 'rotate(90deg)';
+        break;
+      case "left":
+        head.style.transform = 'rotate(180deg)';
+        break;
+      case "right":
+        
+        break;
+    }
+
+  }else{
+    let headColumnStyle = head.style["grid-column-start"];
+    let headRowStyle = head.style["grid-row-start"];
+    let secondElem = boxes[1];
+    let bodyColumnStyle = secondElem.style["grid-column-start"];
+    let bodyRowStyle = secondElem.style["grid-row-start"];
+
+    let positionX = parseInt(headColumnStyle) - parseInt(bodyColumnStyle);
+    let positionY = parseInt(headRowStyle) - parseInt(bodyRowStyle);
+
+    if(positionX > 0){
+      head.style.transform = 'rotate(-360deg)';
+    }
+    if(positionX > 0){
+      // head.style.transform = 'rotate(-90deg)';
+    }
+    if(positionY < 0){
+      head.style.transform = 'rotate(-90deg)';
+    }
+    if(positionY > 0){
+      head.style.transform = 'rotate(90deg)';
+    }
+  }
+}
+
 
 
 function main(ctime) {
@@ -67,9 +168,13 @@ function main(ctime) {
 }
 
 
+
+
+
+// function for showing ending menue
 // for touch controles
 let startX, startY, endX, endY;
-const threshold = 6 // Minimum distance to consider a swipe
+const threshold = 2 // Minimum distance to consider a swipe
 function touchStartHandler(e) {
   const touch = e.touches[0];
   startX = touch.pageX;
@@ -82,6 +187,7 @@ function touchEndHandler(e) {
   endX = touch.pageX;
   endY = touch.pageY;
   moveSound.play();
+  
   handleSwipe();
 }
 boardBody.addEventListener('touchstart', touchStartHandler);
@@ -114,155 +220,6 @@ function handleSwipe() {
       }
   }
 }
-
-
-
-// function for showing ending menue
-const showEndingPopup = ()=>{
-
-  let snakeSelectionPos = {
-    left:23.8,
-    right:23.8
-  };
-  let speedSelectionPos = {
-    left:27.6,
-    right:27.6
-  };
-  if(window.innerWidth <= 740){
-    speedSelectionPos = {
-      left:30.6,
-      right:18
-    };
-    snakeSelectionPos = {
-      left:26,
-      right:13.7
-    };
-  }
-  // function for handling selection of setting items eg snake and speed
-  function handleSelection(elem,mycase,selection,left,right){
-    switch(elem){
-      case mycase[0]:
-        selection.style.left = `${left}%`;
-        selection.style.right = "";
-        break;
-      case mycase[1]:
-        selection.style.right = "";
-        selection.style.left = "";
-        break;
-      case mycase[2]:
-        selection.style.right = `${right}%`;
-        selection.style.left = "";
-        break;
-      case "":
-        selection.style.left = `${right}%`;
-        selection.style.right = "";
-        break;
-    }
-  }
-  function saveSettings(item,setting){
-    localStorage.setItem(item, setting);
-    showPopUp(`item selected and setting saved `);
-  }
-
-    modal.showModal();
-    showPopUp("hello to you");
-    pause = true;
-    let playButton = document.getElementById("play");
-    let exitButton = document.getElementById("exit");
-    let selectButton = document.getElementById("select");
-    playButton.addEventListener("click",()=>{
-        modal.close();
-        window.location.reload();
-        
-    });
-
-
-    selectButton.addEventListener("click",()=>{
-      let targetBox = document.getElementById("preview");
-      targetBox.innerHTML = `<div class="selectBox">
-                              <div class="tittle"><p><span style="margin-right:6px"><i class="fa-duotone fa-solid fa-gear"></i></span>Setting</p></div>
-                              <div class="items-container">
-                              
-                              <div class="heading"><p>Select Snake</p></div>
-                              <div class="snake-select">
-                                <img src="./img/snake-head.svg" class="selection-img" loading="lazy" alt="snake-01">
-                                <img src="./img/snake-head-green.svg" class="selection-img" loading="lazy" alt="snake-02">
-                                <img src="./img/snake-head-red.svg" class="selection-img" loading="lazy" alt="snake-03">
-                                <div class="line"></div>
-                              </div>
-                              <div class="heading"><p>Select Speed</p></div>
-                              <div class="speed-select">
-                                <img src="./img/turtle.png" class="selection-img w-16" loading="lazy" alt="snake-01">
-                                <img src="./img/rabbit.png" class="selection-img w-16" loading="lazy" alt="snake-02">
-                                <img src="./img/cheetah.png" class="selection-img w-16" loading="lazy" alt="snake-03">
-                                <div class="line2"></div>
-                              </div>
-                              
-                              </div>
-                              </div>`
-    
-    let SnakeBox = "";                          
-    let SpeedBox = "";                          
-    localStorage.getItem("Snake")?SnakeBox=localStorage.getItem("Snake"):SnakeBox="";
-    localStorage.getItem("Speed")?SpeedBox=localStorage.getItem("Speed"):SpeedBox="";
-    
-
-      
-    let selectSnake = document.querySelector(".snake-select");
-    let selectSpeed = document.querySelector(".speed-select");
-    let line1 = document.querySelector(".line");
-    let line2 = document.querySelector(".line2");
-
-    line1.style.height = `${line1.getBoundingClientRect().width}px`;
-    line2.style.height = `${line2.getBoundingClientRect().width}px`;
-    let snakeCaseArr = ["./img/snake-head.svg","./img/snake-head-green.svg","./img/snake-head-red.svg"];
-    let speedCaseArr = ["3","6","9"];
-    handleSelection(SnakeBox,snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
-    handleSelection(SpeedBox,speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
-
-    selectSnake.addEventListener("click",(elem)=>{
-
-      
-      let item = elem.target;
-      let snakeCaseArr = ["snake-01","snake-02","snake-03"];
-      
-      handleSelection(item.getAttribute("alt"),snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
-      
-      saveSettings("Snake",item.getAttribute("src"));
-    });
-    selectSpeed.addEventListener("click",(elem)=>{
-
-      let btn = document.getElementById("store-btn");
-      let item = elem.target;
-      let speedCaseArr = ["snake-01","snake-02","snake-03"];
-      let speedSetting = 6;
-      
-      handleSelection(item.getAttribute("alt"),speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
-      switch(item.getAttribute("src")){
-        case "./img/turtle.png":
-          speedSetting = 3;
-          break;
-        case "./img/rabbit.png":
-          speedSetting = 6;
-          break;
-        case "./img/cheetah.png":
-          speedSetting = 9;
-          break;
-          
-
-      }
-      saveSettings("Speed",speedSetting);
-    });
-
-
-      
-  });
-    exitButton.addEventListener("click",()=>{
-
-        window.close();
-    });
-}
-
 // for generating random values
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -290,6 +247,9 @@ function isCollide(snake) {
 }
 
 function gameEngine() {
+
+  //function variables
+  let boxes;
 
 
     // Part 1: Updating the snake array & Food
@@ -347,6 +307,7 @@ function gameEngine() {
 
         if (index === 0) {
             snakeElement.classList.add('head');
+            snakeElement.id = "snake";
             if(localStorage.getItem("Snake")){
               let opt = localStorage.getItem("Snake")
               snakeElement.style.backgroundImage = `url("${opt}")`;
@@ -356,6 +317,7 @@ function gameEngine() {
 
         else {
             snakeElement.classList.add('snake');
+            snakeElement.id = "snake";
             if(localStorage.getItem("Snake")){
               let opt = localStorage.getItem("Snake")
               switch(opt){
@@ -373,62 +335,13 @@ function gameEngine() {
             }
 
         }
-        
-        // logic for snake turning effect
-
-        
-        
+        //appanding snake element
         board.appendChild(snakeElement);
+        // logic for snake turning effect head        
 
-        
-        switch (inputDir.position) {
-            case "up":
-                if(snakeElement.classList.contains("head")){
-
-                    snakeElement.style.transform = 'rotate(-90deg)';
-                }
-                
-
-                break;
-            case "down":
-                
-                if(snakeElement.classList.contains("head")){
-                    snakeElement.style.transform = 'rotate(90deg)';
-                    
-                }else{
-                    
-                    snakeElement.style.transform = 'rotate(180deg)';
-                    
-                }
-                
- 
-
-                break;
-            case "left":
-
-                
-                if(snakeElement.classList.contains("head")){
-                    ["grid-row-start"]
-                    snakeElement.style.transform = 'rotate(180deg)';
-                    
-                }else{
-                    snakeElement.style.transform = 'rotate(-90deg)';
-                }
-                
-                
-
-                break;
-            case "right":
-                if (snakeElement.classList.contains("head")) {
-                    
-                }else{
-                    
-                    snakeElement.style.transform = 'rotate(90deg)';
-                    
-                }
-                
-                break;
-        }
+        boxes =document.querySelectorAll("#snake");
+        let head = document.querySelector(".head");
+        changeHeadDir(head,boxes);
 
 
     });
@@ -441,90 +354,22 @@ function gameEngine() {
 
     // logic for handling sanke head and tail
     
-    let boxes = snakeArr.length>=2?document.querySelectorAll(".snake"):["",""];
-    let Lastbox = boxes[boxes.length -1];
-    Lastbox != ""?Lastbox.classList.add("tail"):Lastbox;
-    let head = document.querySelector(".head");
+    
 
-    if(snakeArr.length > 2){
-        let tailColumnStyle = Lastbox.style["grid-column-start"];
-        let tailRowStyle = Lastbox.style["grid-row-start"];
-        let bodyColumnStyle = boxes[boxes.length-2].style["grid-column-start"];
-        let bodyRowStyle = boxes[boxes.length-2].style["grid-row-start"];
+    
 
-        if (tailColumnStyle === bodyColumnStyle && inputDir.position === "right") {
-            Lastbox.style.transform = "rotate(360deg)";
-          }
-          if (tailColumnStyle === bodyColumnStyle && inputDir.position === "left") {
-            Lastbox.style.transform = "rotate(-360deg)";
-          }
-          if (
-            tailColumnStyle === bodyColumnStyle &&
-            parseInt(tailRowStyle) === parseInt(bodyRowStyle) - 1 &&
-            inputDir.position === "left"
-          ) {
-            Lastbox.style.transform = "rotate(-180deg)";
-          }
-          if (
-            tailColumnStyle === bodyColumnStyle &&
-            parseInt(tailRowStyle) === parseInt(bodyRowStyle) - 1 &&
-            inputDir.position === "right"
-          ) {
-            Lastbox.style.transform = "rotate(180deg)";
-          }
-          if (tailRowStyle === bodyRowStyle && inputDir.position === "up") {
-            Lastbox.style.transform = "rotate(-90deg)";
-          }
-          if (tailRowStyle === bodyRowStyle && inputDir.position === "down") {
-            Lastbox.style.transform = "rotate(90deg)";
-          }
-          if (
-            tailRowStyle === bodyRowStyle &&
-            parseInt(tailColumnStyle) ===
-              parseInt(boxes[boxes.length - 2].style["grid-column-start"]) - 1 &&
-            inputDir.position === "up"
-          ) {
-            Lastbox.style.transform = "rotate(90deg)";
-          }
-          if (
-            tailRowStyle === bodyRowStyle &&
-            parseInt(tailColumnStyle) ===
-              parseInt(boxes[boxes.length - 2].style["grid-column-start"]) + 1 &&
-            inputDir.position === "down"
-          ) {
-            Lastbox.style.transform = "rotate(-90deg)";
-          }
-          if (
-            parseInt(tailRowStyle) === parseInt(bodyRowStyle) - 1 &&
-            parseInt(boxes[0].style["grid-row-start"]) ===
-              parseInt(head.style["grid-row-start"]) + 1
-          ) {
-            Lastbox.style.transform = "rotate(180deg)";
-          }
-          if (
-            parseInt(tailRowStyle) ===
-              parseInt(boxes[boxes.length - 2].style["grid-row-start"]) + 1 &&
-            parseInt(boxes[0].style["grid-row-start"]) ===
-              parseInt(head.style["grid-row-start"]) - 1
-          ) {
-            Lastbox.style.transform = "rotate(360deg)";
-          }
-          if (
-            parseInt(tailColumnStyle) ===
-              parseInt(boxes[boxes.length - 2].style["grid-column-start"]) - 1 &&
-            parseInt(boxes[0].style["grid-column-start"]) ===
-              parseInt(head.style["grid-column-start"]) + 1
-          ) {
-            Lastbox.style.transform = "rotate(90deg)";
-          }
-          if (
-            parseInt(tailColumnStyle) ===
-              parseInt(boxes[boxes.length - 2].style["grid-column-start"]) + 1 &&
-            parseInt(boxes[0].style["grid-column-start"]) ===
-              parseInt(head.style["grid-column-start"]) - 1
-          ) {
-            Lastbox.style.transform = "rotate(-90deg)";
-          }
+    if(snakeArr.length >= 2){
+      let Lastbox = boxes[boxes.length -1];
+      Lastbox.classList.add("tail");
+      let tailColumnStyle = Lastbox.style["grid-column-start"];
+      let tailRowStyle = Lastbox.style["grid-row-start"];
+      let bodyColumnStyle = boxes[boxes.length-2].style["grid-column-start"];
+      let bodyRowStyle = boxes[boxes.length-2].style["grid-row-start"];
+      
+      let positionX = parseInt(tailColumnStyle) - parseInt(bodyColumnStyle);
+      let positionY = parseInt(tailRowStyle) - parseInt(bodyRowStyle);
+      changeTailDir(Lastbox,positionX,positionY);
+
         
     }
 
@@ -533,6 +378,10 @@ function gameEngine() {
 
 
 // Main logic starts here
+
+
+
+
 
 
 let hiscore = localStorage.getItem("hiscore");
@@ -545,49 +394,10 @@ else {
     hiscoreBox.innerHTML = hiscore;
 }
 
-function handleControl(key){
-  switch (key) {
-
-    case "ArrowUp":
-
-        inputDir.x = 0;
-        inputDir.y = -1;
-        inputDir.position = "up";
-
-        break;
-
-    case "ArrowDown":
-
-        inputDir.x = 0;
-        inputDir.y = 1;
-        inputDir.position = "down";
-        break;
-
-    case "ArrowLeft":
-
-        inputDir.x = -1;
-        inputDir.y = 0;
-        inputDir.position = "left";
-        break;
-
-    case "ArrowRight":
-      
-
-        inputDir.x = 1;
-        inputDir.y = 0;
-        inputDir.position = "right";
-        break;
-    default:
-        inputDir = { x: 0, y: -1, position: "up" };
-
-        break;
-  }
-  
-
-}
 
 window.requestAnimationFrame(main);
 window.addEventListener('keydown', e => {
+  
     if(!pause){
       
       inputDir = { x: 0, y: 1 } // Start the game

@@ -1,5 +1,5 @@
 // Game Constants & Variables
-let inputDir = { x: 0, y: 0, position: "" };
+
 const foodSound = new Audio('music/food.mp3');
 const gameOverSound = new Audio('music/gameover.mp3');
 const moveSound = new Audio('music/move.mp3');
@@ -13,7 +13,7 @@ let scoreBox = document.getElementById("scoreBox");
 // importing functions from files
 
 import {pause,showEndingPopup} from './popup.js';
-
+import {touchStartHandler,touchEndHandler,handleControl } from './controls.js';
 // variables diclearations
 let snakeElement;
 let foodElement;
@@ -53,47 +53,19 @@ let snakeArr = [
 
 // Game Functions
 
-function handleControl(key){
-  switch (key) {
-
-    case "ArrowUp":
-        
-        inputDir.x = 0;
-        inputDir.y = -1;
-        inputDir.position = "up";
-
-        break;
-
-    case "ArrowDown":
-
-        inputDir.x = 0;
-        inputDir.y = 1;
-        inputDir.position = "down";
-        break;
-
-    case "ArrowLeft":
-
-        inputDir.x = -1;
-        inputDir.y = 0;
-        inputDir.position = "left";
-        break;
-
-    case "ArrowRight":
-      
-
-        inputDir.x = 1;
-        inputDir.y = 0;
-        inputDir.position = "right";
-        break;
-    default:
-        inputDir = { x: 0, y: -1, position: "up" };
-
-        break;
-  }
+function resetGame(){
+  window.inputDir = { x: 0, y: 0 };
+  snakeArr = [{ x: gridRowCount-3, y: gridRowCount-2}];
+  gameEnd = true;
   
-
+  score = 0;
+  scoreBox.innerHTML =  score;
+  gameOverSound.play();
+  
+  boardBody.removeEventListener('touchstart', touchStartHandler);
+  boardBody.removeEventListener('touchend',touchEndHandler);
+  showEndingPopup();
 }
-
 
 
 function changeTailDir(box,positionX,positionY){
@@ -114,7 +86,7 @@ function changeTailDir(box,positionX,positionY){
 
 function changeHeadDir(head,boxes){
   if(!(boxes.length >= 2)){
-    switch(inputDir.position){
+    switch(window.inputDir.position){
       case "up":
         head.style.transform = 'rotate(-90deg)';
         break;
@@ -143,7 +115,7 @@ function changeHeadDir(head,boxes){
       head.style.transform = 'rotate(-360deg)';
     }
     if(positionX > 0){
-      // head.style.transform = 'rotate(-90deg)';
+      //no need to do any thing.
     }
     if(positionY < 0){
       head.style.transform = 'rotate(-90deg)';
@@ -154,7 +126,19 @@ function changeHeadDir(head,boxes){
   }
 }
 
-
+function changeSnakeColor(opt){
+  switch(opt){
+    case "./img/snake-head.svg":
+      snakeElement.style.backgroundColor = "#5876ba";
+      break;
+    case "./img/snake-head-purple.svg":
+      snakeElement.style.backgroundColor = "#7a49e5";
+      break;
+    case "./img/snake-head-green.svg":
+      snakeElement.style.backgroundColor = "#00a76b";
+      break;
+  }
+}
 
 function main(ctime) {
 
@@ -171,55 +155,7 @@ function main(ctime) {
 
 
 
-// function for showing ending menue
-// for touch controles
-let startX, startY, endX, endY;
-const threshold = 2 // Minimum distance to consider a swipe
-function touchStartHandler(e) {
-  const touch = e.touches[0];
-  startX = touch.pageX;
-  console.log(touch);
-  startY = touch.pageY;
-  e.preventDefault();
-}
-function touchEndHandler(e) {
-  const touch = e.changedTouches[0];
-  endX = touch.pageX;
-  endY = touch.pageY;
-  moveSound.play();
-  
-  handleSwipe();
-}
-boardBody.addEventListener('touchstart', touchStartHandler);
 
-boardBody.addEventListener('touchend',touchEndHandler);
-
-function handleSwipe() {
-  const deltaX = endX - startX;
-  const deltaY = endY - startY;
-
-  // Determine swipe direction
-  if (Math.abs(deltaX) > threshold || Math.abs(deltaY) > threshold) {
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          if (deltaX > 0) {
-              
-              handleControl("ArrowRight");
-              
-          } else {
-          
-              handleControl("ArrowLeft");
-          }
-      } else {
-          if (deltaY > 0) {
-              
-              handleControl("ArrowDown");
-          } else {
-             
-              handleControl("ArrowUp");
-          }
-      }
-  }
-}
 // for generating random values
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -254,18 +190,9 @@ function gameEngine() {
 
     // Part 1: Updating the snake array & Food
     if (isCollide(snakeArr)) {
-        
-        inputDir = { x: 0, y: 0 };
-        snakeArr = [{ x: gridRowCount-3, y: gridRowCount-2}];
-        gameEnd = true;
-        
-        score = 0;
-        scoreBox.innerHTML =  score;
-        gameOverSound.play();
-        
-        boardBody.removeEventListener('touchstart', touchStartHandler);
-        boardBody.removeEventListener('touchend',touchEndHandler);
-        showEndingPopup();
+
+      resetGame();
+
     }
 
     // If you have eaten the food, increment the score and regenerate the food
@@ -278,7 +205,7 @@ function gameEngine() {
             localStorage.setItem("hiscore", JSON.stringify(hiscoreval));
             hiscoreBox.innerHTML = hiscoreval;
         }
-        snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
+        snakeArr.unshift({ x: snakeArr[0].x + window.inputDir.x, y: snakeArr[0].y + window.inputDir.y });
         let m = 4;
         let max = gridColumnCount-m;
         food = { x: getRandomInt(m, max), y: getRandomInt(m, max) }
@@ -292,8 +219,8 @@ function gameEngine() {
         isRunning = true;
   
       }
-      snakeArr[0].x += inputDir.x;
-      snakeArr[0].y += inputDir.y;
+      snakeArr[0].x += window.inputDir.x;
+      snakeArr[0].y += window.inputDir.y;
     }
 
     // Part 2: Display the snake and Food
@@ -319,25 +246,15 @@ function gameEngine() {
             snakeElement.classList.add('snake');
             snakeElement.id = "snake";
             if(localStorage.getItem("Snake")){
+              // changing snake color according to setting 
               let opt = localStorage.getItem("Snake")
-              switch(opt){
-                case "./img/snake-head.svg":
-                  snakeElement.style.backgroundColor = "#5876ba";
-                  break;
-                case "./img/snake-head-red.svg":
-                  snakeElement.style.backgroundColor = "#D21404";
-                  break;
-                case "./img/snake-head-green.svg":
-                  snakeElement.style.backgroundColor = "#00a76b";
-                  break;
-              }
-    
+              changeSnakeColor(opt);
             }
 
         }
         //appanding snake element
         board.appendChild(snakeElement);
-        // logic for snake turning effect head        
+        // logic for snake rotating of snake head        
 
         boxes =document.querySelectorAll("#snake");
         let head = document.querySelector(".head");
@@ -377,12 +294,12 @@ function gameEngine() {
 }
 
 
-// Main logic starts here
 
 
 
 
 
+// setting the highscore according to data in localStorage
 
 let hiscore = localStorage.getItem("hiscore");
 if (hiscore === null) {
@@ -400,7 +317,7 @@ window.addEventListener('keydown', e => {
   
     if(!pause){
       
-      inputDir = { x: 0, y: 1 } // Start the game
+      window.inputDir = { x: 0, y: 1 } // Start the game
       moveSound.play();
       
       handleControl(e.key)

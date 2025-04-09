@@ -4,16 +4,16 @@ let popup = `<div class="selectBox">
                               
                               <div class="heading"><p>Select Snake</p></div>
                               <div class="snake-select">
-                                <img src="./img/snake-head.svg" class="selection-img" loading="lazy" alt="snake-01">
-                                <img src="./img/snake-head-green.svg" class="selection-img" loading="lazy" alt="snake-02">
-                                <img src="./img/snake-head-red.svg" class="selection-img" loading="lazy" alt="snake-03">
+                                <img src="./img/snake-head.svg" id="snake-item" class="selection-img" loading="lazy" alt="snake-01">
+                                <img src="./img/snake-head-green.svg" id="snake-item" class="selection-img" loading="lazy" alt="snake-02">
+                                <img src="./img/snake-head-purple.svg" id="snake-item" class="selection-img" loading="lazy" alt="snake-03">
                                 <div class="line"></div>
                               </div>
                               <div class="heading"><p>Select Speed</p></div>
                               <div class="speed-select">
-                                <img src="./img/turtle.png" class="selection-img w-16" loading="lazy" alt="snake-01">
-                                <img src="./img/rabbit.png" class="selection-img w-16" loading="lazy" alt="snake-02">
-                                <img src="./img/cheetah.png" class="selection-img w-16" loading="lazy" alt="snake-03">
+                                <img src="./img/turtle.png" id="speed-item" class="selection-img " loading="lazy" alt="snake-01">
+                                <img src="./img/rabbit.png" id="speed-item" class="selection-img " loading="lazy" alt="snake-02">
+                                <img src="./img/cheetah.png" id="speed-item" class="selection-img " loading="lazy" alt="snake-03">
                                 <div class="line2"></div>
                               </div>
                               
@@ -33,6 +33,23 @@ const showPopUp = (mesg) =>{
   
 
 }
+function selectionMovementHandler(items,parentElem,slectionElem){
+  items.forEach((item => {
+    item.addEventListener('click', () => {
+      const rect = item.getBoundingClientRect();
+      const containerRect = parentElem.getBoundingClientRect();
+
+      const offsetX = rect.left - containerRect.left;
+      const offsetY = rect.top - containerRect.top;
+      console.log(offsetX);
+      console.log(offsetY);
+
+      // slectionElem.style.width = rect.width + 'px';
+      // slectionElem.style.height = rect.height + 'px';
+      slectionElem.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+    });
+  }));
+}
 
 export let pause = false;
 let modal = document.getElementsByTagName("dialog")[0];
@@ -40,52 +57,43 @@ let modal = document.getElementsByTagName("dialog")[0];
 
 export const showEndingPopup = ()=>{
 
-  let snakeSelectionPos = {
-    left:23.8,
-    right:23.8
-  };
-  let speedSelectionPos = {
-    left:27.6,
-    right:27.6
-  };
-  if(window.innerWidth <= 740){
-    speedSelectionPos = {
-      left:30.6,
-      right:18
-    };
-    snakeSelectionPos = {
-      left:26,
-      right:13.7
-    };
-  }
+
   // function for handling selection of setting items eg snake and speed
-  function handleSelection(elem,mycase,selection,left,right){
-    switch(elem){
-      case mycase[0]:
-        selection.style.left = `${left}%`;
-        selection.style.right = "";
-        break;
-      case mycase[1]:
-        selection.style.right = "";
-        selection.style.left = "";
-        break;
-      case mycase[2]:
-        selection.style.right = `${right}%`;
-        selection.style.left = "";
-        break;
-      case "":
-        selection.style.left = `${right}%`;
-        selection.style.right = "";
-        break;
-    }
-  }
+
   function saveSettings(item,setting){
     localStorage.setItem(item, setting);
-    showPopUp(`item selected and setting saved `);
+    showPopUp(`<i class="fa-regular fa-circle-check green"></i>  item selected and setting saved `);
+  }
+
+  function saveSlectionCoordinates(item,element,name){
+    const rect = item.getBoundingClientRect();
+    const containerRect = element.getBoundingClientRect();
+    const offsetX = rect.left - containerRect.left;
+    const offsetY = rect.top - containerRect.top;
+
+    const coordinates = {
+      "offsetX" : offsetX,
+      "offsetY" : offsetY
+    }
+    const Jsoncoordinates = JSON.stringify(coordinates);
+    localStorage.setItem(name, Jsoncoordinates);
+
+  }
+
+  function settingLineStyle(line1,line2){
+    line1.style.height = `${line1.getBoundingClientRect().width}px`;
+    line2.style.height = `${line2.getBoundingClientRect().width}px`;
+    let data = [localStorage.getItem("offset1"),localStorage.getItem("offset2")];
+    if(data){
+      let offset1 = JSON.parse(data[0]);
+      let offset2 = JSON.parse(data[1]);
+      line1.style.transform = `translate(${offset1["offsetX"]}px, ${offset1["offsetY"]}px)`;
+      line2.style.transform = `translate(${offset2["offsetX"]}px, ${offset2["offsetY"]}px)`;
+    }
   }
 
     modal.showModal();
-    showPopUp("hello to you");
+    
     pause = true;
     let playButton = document.getElementById("play");
     let exitButton = document.getElementById("exit");
@@ -101,43 +109,40 @@ export const showEndingPopup = ()=>{
       let targetBox = document.getElementById("preview");
       targetBox.innerHTML = popup;
     
-    let SnakeBox = "";                          
-    let SpeedBox = "";                          
-    localStorage.getItem("Snake")?SnakeBox=localStorage.getItem("Snake"):SnakeBox="";
-    localStorage.getItem("Speed")?SpeedBox=localStorage.getItem("Speed"):SpeedBox="";
-    
-
+      let SnakeBox = "";                          
+      let SpeedBox = "";                          
+      localStorage.getItem("Snake")?SnakeBox=localStorage.getItem("Snake"):SnakeBox="";
+      localStorage.getItem("Speed")?SpeedBox=localStorage.getItem("Speed"):SpeedBox="";
       
-    let selectSnake = document.querySelector(".snake-select");
-    let selectSpeed = document.querySelector(".speed-select");
-    let line1 = document.querySelector(".line");
-    let line2 = document.querySelector(".line2");
 
-    line1.style.height = `${line1.getBoundingClientRect().width}px`;
-    line2.style.height = `${line2.getBoundingClientRect().width}px`;
-    let snakeCaseArr = ["./img/snake-head.svg","./img/snake-head-green.svg","./img/snake-head-red.svg"];
-    let speedCaseArr = ["3","6","9"];
-    handleSelection(SnakeBox,snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
-    handleSelection(SpeedBox,speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
 
-    selectSnake.addEventListener("click",(elem)=>{
+      let selectSnake = document.querySelector(".snake-select");
+      let selectSpeed = document.querySelector(".speed-select");
+      let Snakeitems = document.querySelectorAll("#snake-item");
+      let Speeditems = document.querySelectorAll("#speed-item");
+      let line1 = document.querySelector(".line");
+      let line2 = document.querySelector(".line2");
 
+      settingLineStyle(line1,line2);
+
+      selectionMovementHandler(Snakeitems,selectSnake,line1);
+      selectionMovementHandler(Speeditems,selectSpeed,line2);
       
-      let item = elem.target;
-      let snakeCaseArr = ["snake-01","snake-02","snake-03"];
-      
-      handleSelection(item.getAttribute("alt"),snakeCaseArr,line1,snakeSelectionPos.left,snakeSelectionPos.right);
-      
-      saveSettings("Snake",item.getAttribute("src"));
-    });
+      selectSnake.addEventListener("click",(elem)=>{
+        let item = elem.target;
+        
+        saveSlectionCoordinates(item,selectSnake,"offset1");
+        saveSettings("Snake",item.getAttribute("src")) 
+      });
+
+
     selectSpeed.addEventListener("click",(elem)=>{
 
-      let btn = document.getElementById("store-btn");
+      
       let item = elem.target;
-      let speedCaseArr = ["snake-01","snake-02","snake-03"];
       let speedSetting = 6;
       
-      handleSelection(item.getAttribute("alt"),speedCaseArr,line2,speedSelectionPos.left,speedSelectionPos.right);
+      
       switch(item.getAttribute("src")){
         case "./img/turtle.png":
           speedSetting = 3;
@@ -151,6 +156,7 @@ export const showEndingPopup = ()=>{
           
 
       }
+      saveSlectionCoordinates(item,selectSpeed,"offset2");
       saveSettings("Speed",speedSetting);
     });
 

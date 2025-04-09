@@ -84,7 +84,7 @@ export const showEndingPopup = ()=>{
     line1.style.height = `${line1.getBoundingClientRect().width}px`;
     line2.style.height = `${line2.getBoundingClientRect().width}px`;
     let data = [localStorage.getItem("offset1"),localStorage.getItem("offset2")];
-    if(data){
+    if(localStorage.getItem("offset1")){
       let offset1 = JSON.parse(data[0]);
       let offset2 = JSON.parse(data[1]);
       line1.style.transform = `translate(${offset1["offsetX"]}px, ${offset1["offsetY"]}px)`;

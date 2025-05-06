@@ -63,7 +63,7 @@ function resetGame(){
   gameOverSound.play();
   
   boardBody.removeEventListener('touchstart', touchStartHandler);
-  boardBody.removeEventListener('touchend',touchEndHandler);
+  boardBody.removeEventListener('touchmove',touchEndHandler);
   showEndingPopup();
 }
 

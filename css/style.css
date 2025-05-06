@@ -88,7 +88,7 @@ body{
 .head{
     background-image: url("../img/snake-head.svg");
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 102% 102%;
 
 }
 
@@ -97,8 +97,8 @@ body{
     background-color: #5876ba;
     /* background-color: #D21404; */
     /* background-color: #00a76b; */
-    width: auto;
-    height: auto;
+    width: 102%;
+    height: 102%;
     
 
 
@@ -274,7 +274,7 @@ dialog::backdrop{
 	border-radius: 8px;
 	transition: all 0.6s ease-in-out;
     /* width: clamp(15.7%, 5vw + 13%, 18.3%); */
-    width: 15.7%;
+    width: 16.8%;
 
     /* height: 54px; */
     
@@ -288,7 +288,7 @@ dialog::backdrop{
 	border-radius: 8px;
 	transition: all 0.6s ease-in-out;
     /* width: clamp(13.9%, 5vw + 10%, 17.9%); */
-    width: 13.9%;
+    width: 15.3%;
     /* height: 54px; */
 }
 
@@ -330,10 +330,10 @@ dialog::backdrop{
     
     }
     .line{
-        width:18.3%;
+        width:16%;
     }
     .line2{
-        width:17.9%;
+        width:15.9%;
     }
 }
 

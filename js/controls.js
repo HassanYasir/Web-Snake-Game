@@ -9,14 +9,14 @@ let boardBody = document.getElementById("board");
 
 
 // for touch controles
-// function for showing ending menue
-// for touch controles
+
+
 let startX, startY, endX, endY;
-const threshold = 2 // Minimum distance to consider a swipe
+const threshold = 4 // Minimum distance to consider a swipe
 export function touchStartHandler(e) {
   const touch = e.touches[0];
   startX = touch.pageX;
-  console.log(touch);
+//   console.log(touch);
   startY = touch.pageY;
   e.preventDefault();
 }
@@ -30,7 +30,7 @@ export function touchEndHandler(e) {
 }
 boardBody.addEventListener('touchstart', touchStartHandler);
 
-boardBody.addEventListener('touchend',touchEndHandler);
+boardBody.addEventListener('touchmove',touchEndHandler);
 
 function handleSwipe() {
   const deltaX = endX - startX;

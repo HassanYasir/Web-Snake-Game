@@ -41,11 +41,10 @@ function selectionMovementHandler(items,parentElem,slectionElem){
 
       const offsetX = rect.left - containerRect.left;
       const offsetY = rect.top - containerRect.top;
-      console.log(offsetX);
-      console.log(offsetY);
+      // console.log(offsetX);
+      // console.log(offsetY);
 
-      // slectionElem.style.width = rect.width + 'px';
-      // slectionElem.style.height = rect.height + 'px';
+
       slectionElem.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     });
   }));
@@ -81,6 +80,9 @@ export const showEndingPopup = ()=>{
   }
 
   function settingLineStyle(line1,line2){
+    let slectionWidth = document.querySelectorAll(".selection-img")[0].getBoundingClientRect().width;
+    line1.style.width = `${slectionWidth+5}px`;
+    line2.style.width = `${slectionWidth+5}px`;
     line1.style.height = `${line1.getBoundingClientRect().width}px`;
     line2.style.height = `${line2.getBoundingClientRect().width}px`;
     let data = [localStorage.getItem("offset1"),localStorage.getItem("offset2")];

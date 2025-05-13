@@ -2,8 +2,7 @@
 
 const foodSound = new Audio('music/food.mp3');
 const gameOverSound = new Audio('music/gameover.mp3');
-const moveSound = new Audio('music/move.mp3');
-const musicSound = new Audio('music/music.mp3');
+
 
 // DOM elements variables
 
@@ -86,19 +85,12 @@ function changeTailDir(box,positionX,positionY){
 
 function changeHeadDir(head,boxes){
   if(!(boxes.length >= 2)){
-    switch(window.inputDir.position){
-      case "up":
-        head.style.transform = 'rotate(-90deg)';
-        break;
-      case "down":
-        head.style.transform = 'rotate(90deg)';
-        break;
-      case "left":
-        head.style.transform = 'rotate(180deg)';
-        break;
-      case "right":
-        
-        break;
+    if (window.inputDir.y === -1) {
+      head.style.transform = "rotate(-90deg)";
+    } else if (window.inputDir.y === 1) {
+      head.style.transform = "rotate(90deg)";
+    } else if (window.inputDir.x === -1) {
+      head.style.transform = "rotate(180deg)";
     }
 
   }else{
@@ -225,7 +217,7 @@ function gameEngine() {
 
     // Part 2: Display the snake and Food
     // Display the snake
-    board.innerHTML = "";
+    boardBody.innerHTML = "";
     snakeArr.forEach((e, index) => {
 
         snakeElement = document.createElement('div');
@@ -253,7 +245,7 @@ function gameEngine() {
 
         }
         //appanding snake element
-        board.appendChild(snakeElement);
+        boardBody.appendChild(snakeElement);
         // logic for snake rotating of snake head        
 
         boxes =document.querySelectorAll("#snake");
@@ -267,7 +259,7 @@ function gameEngine() {
     foodElement.style.gridRowStart = food.y;
     foodElement.style.gridColumnStart = food.x;
     foodElement.classList.add('food');
-    board.appendChild(foodElement);
+    boardBody.appendChild(foodElement);
 
     // logic for handling sanke head and tail
     
@@ -313,12 +305,10 @@ else {
 
 
 window.requestAnimationFrame(main);
+
 window.addEventListener('keydown', e => {
   
     if(!pause){
-      
-      window.inputDir = { x: 0, y: 1 } // Start the game
-      moveSound.play();
       
       handleControl(e.key)
     }

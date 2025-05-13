@@ -1,6 +1,6 @@
 // variables
 
-window.inputDir = { x: 0, y: 0, position: "" };
+window.inputDir = { x: 0, y: 0};
 
 const moveSound = new Audio('music/move.mp3');
 let boardBody = document.getElementById("board");
@@ -24,8 +24,6 @@ export function touchEndHandler(e) {
   const touch = e.changedTouches[0];
   endX = touch.pageX;
   endY = touch.pageY;
-  moveSound.play();
-  
   handleSwipe();
 }
 boardBody.addEventListener('touchstart', touchStartHandler);
@@ -63,43 +61,29 @@ function handleSwipe() {
 // for keyboard controles
 
 export function handleControl(key){
-    switch (key) {
-  
-      case "ArrowUp":
-          
-          window.inputDir.x = 0;
-          window.inputDir.y = -1;
-          window.inputDir.position = "up";
-  
-          break;
-  
-      case "ArrowDown":
-  
-          window.inputDir.x = 0;
-          window.inputDir.y = 1;
-          window.inputDir.position = "down";
-          break;
-  
-      case "ArrowLeft":
-  
-          window.inputDir.x = -1;
-          window.inputDir.y = 0;
-          window.inputDir.position = "left";
-          break;
-  
-      case "ArrowRight":
+
+    moveSound.play();
+      
+    if(key === "ArrowUp" && window.inputDir.y !== 1){  
+        window.inputDir.x = 0;
+        window.inputDir.y = -1;
         
-  
-          window.inputDir.x = 1;
-          window.inputDir.y = 0;
-          window.inputDir.position = "right";
-          break;
-      default:
-          window.inputDir = { x: 0, y: -1, position: "up" };
-  
-          break;
     }
-    
-  
+    if(key === "ArrowDown" && window.inputDir.y !== -1){  
+        window.inputDir.x = 0;
+        window.inputDir.y = 1;
+        
+    }
+    if(key === "ArrowLeft" && window.inputDir.x !== 1){  
+        window.inputDir.x = -1;
+        window.inputDir.y = 0;
+        
+    }
+    if(key === "ArrowRight" && window.inputDir.x !== -1){  
+        window.inputDir.x = 1;
+        window.inputDir.y = 0;
+        
+    }
+          
 }
   

@@ -41,8 +41,6 @@ function selectionMovementHandler(items,parentElem,slectionElem){
 
       const offsetX = rect.left - containerRect.left;
       const offsetY = rect.top - containerRect.top;
-      // console.log(offsetX);
-      // console.log(offsetY);
 
 
       slectionElem.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
@@ -50,7 +48,7 @@ function selectionMovementHandler(items,parentElem,slectionElem){
   }));
 }
 
-export let pause = false;
+
 let modal = document.getElementsByTagName("dialog")[0];
 
 
@@ -95,8 +93,7 @@ export const showEndingPopup = ()=>{
   }
 
     modal.showModal();
-    
-    pause = true;
+
     let playButton = document.getElementById("play");
     let exitButton = document.getElementById("exit");
     let selectButton = document.getElementById("select");
@@ -110,13 +107,6 @@ export const showEndingPopup = ()=>{
     selectButton.addEventListener("click",()=>{
       let targetBox = document.getElementById("preview");
       targetBox.innerHTML = popup;
-    
-      let SnakeBox = "";                          
-      let SpeedBox = "";                          
-      localStorage.getItem("Snake")?SnakeBox=localStorage.getItem("Snake"):SnakeBox="";
-      localStorage.getItem("Speed")?SpeedBox=localStorage.getItem("Speed"):SpeedBox="";
-      
-
 
       let selectSnake = document.querySelector(".snake-select");
       let selectSpeed = document.querySelector(".speed-select");

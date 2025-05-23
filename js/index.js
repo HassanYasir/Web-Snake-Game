@@ -47,7 +47,9 @@ const gridColumnCount = gridComputedStyle
   .getPropertyValue("grid-template-columns")
   .split(" ").length;
 
-let snakeArr = [{ x: gridRowCount - 3, y: gridRowCount - 2 }];
+let snakeArr = [{ x: gridRowCount - 3, y: gridRowCount - 2 },
+  { x: gridRowCount - 4, y: gridRowCount - 2 }
+];
 
 // Game Functions
 
@@ -191,10 +193,6 @@ function foodEaten() {
     localStorage.setItem("hiscore", JSON.stringify(hiscoreval));
     hiscoreBox.innerHTML = hiscoreval;
   }
-  // snakeArr.unshift({
-  //   x: snakeArr[0].x + window.inputDir.x,
-  //   y: snakeArr[0].y + window.inputDir.y,
-  // });
   let m = 4;
   let max = gridColumnCount - m;
   food = { x: getRandomInt(m, max), y: getRandomInt(m, max) };
@@ -225,18 +223,21 @@ function isCollide(snake) {
 
 function gameEngine() {
   //function variables
-  let snakeHead = {
-    x: snakeArr[0].x + window.inputDir.x,
-    y: snakeArr[0].y + window.inputDir.y
-  }
-  snakeArr.unshift(snakeHead);
   let boxes;
-
-  // If you have eaten the food, increment the score and regenerate the food
-  if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
-    foodEaten();
-  }else{
-    snakeArr.pop();
+  if(window.inputDir.x !== 0 || window.inputDir.y !== 0 ){
+    let snakeHead = {
+      x: snakeArr[0].x + window.inputDir.x,
+      y: snakeArr[0].y + window.inputDir.y
+    }
+    snakeArr.unshift(snakeHead);
+  
+    // If you have eaten the food, increment the score and regenerate the food
+    if (snakeArr[0].y === food.y && snakeArr[0].x === food.x) {
+      foodEaten();
+    }else{
+      snakeArr.pop();
+    }
+  
   }
 
   // checking the collision and reseting the game

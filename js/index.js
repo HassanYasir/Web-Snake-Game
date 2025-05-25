@@ -55,7 +55,9 @@ let snakeArr = [{ x: gridRowCount - 3, y: gridRowCount - 2 },
 
 function resetGame() {
   window.inputDir = { x: 0, y: 0 };
-  snakeArr = [{ x: gridRowCount - 3, y: gridRowCount - 2 }];
+  snakeArr = [{ x: gridRowCount - 3, y: gridRowCount - 2 },
+    { x: gridRowCount - 4, y: gridRowCount - 2 }
+  ];
   gameEnd = true;
   score = 0;
   scoreBox.innerHTML = score;
@@ -88,38 +90,18 @@ function changeTailDir(box, positionX, positionY) {
   }
 }
 
-function changeHeadDir(head, boxes) {
-  if (!(boxes.length >= 2)) {
-    if (window.inputDir.y === -1) {
-      head.style.transform = "rotate(-90deg)";
-    } else if (window.inputDir.y === 1) {
-      head.style.transform = "rotate(90deg)";
-    } else if (window.inputDir.x === -1) {
-      head.style.transform = "rotate(180deg)";
-    }
-  } else {
-    let headColumnStyle = head.style["grid-column-start"];
-    let headRowStyle = head.style["grid-row-start"];
-    let secondElem = boxes[1];
-    let bodyColumnStyle = secondElem.style["grid-column-start"];
-    let bodyRowStyle = secondElem.style["grid-row-start"];
+function changeHeadDir(head) {
+  if (window.inputDir.y === -1) {
+    head.style.transform = "rotate(-90deg)";
 
-    let positionX = parseInt(headColumnStyle) - parseInt(bodyColumnStyle);
-    let positionY = parseInt(headRowStyle) - parseInt(bodyRowStyle);
+  }else if (window.inputDir.y === 1) {
+    head.style.transform = "rotate(90deg)";
 
-    if (positionX > 0) {
-      head.style.transform = "rotate(-360deg)";
-    }
-    // if (positionX > 0) {
-    //   //no need to do any thing.
-    // }
-    if (positionY < 0) {
-      head.style.transform = "rotate(-90deg)";
-    }
-    if (positionY > 0) {
-      head.style.transform = "rotate(90deg)";
-    }
+  }else if (window.inputDir.x === -1) {
+    head.style.transform = "rotate(180deg)";
+
   }
+  
 }
 
 function changeSnakeColor(opt) {
@@ -149,7 +131,14 @@ function createSnakeElement(index,x,y){
     snakeElement.id = "snake";
     
     let opt = localStorageHasData("Snake");
-    snakeElement.style.backgroundImage = `url("${opt}")`;
+
+    // if localstorage does not have the setting data then setting the default image to head
+    if(!opt){
+      snakeElement.style.backgroundImage = `url("../img/snake-head.svg")`;
+    }else{
+      
+      snakeElement.style.backgroundImage = `url("${opt}")`;
+    }
     
   } else {
     if(index === snakeArr.length-1){
@@ -256,7 +245,7 @@ function gameEngine() {
 
     boxes = document.querySelectorAll("#snake");
     let head = document.querySelector(".head");
-    changeHeadDir(head, boxes);
+    changeHeadDir(head);
   });
   // Display the food
   foodElement = document.createElement("div");

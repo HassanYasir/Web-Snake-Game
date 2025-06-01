@@ -88,7 +88,7 @@ body{
 .head{
     background-image: url("../img/snake-head.svg");
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 102% 102%;
 
 }
 
@@ -97,19 +97,28 @@ body{
     background-color: #5876ba;
     /* background-color: #D21404; */
     /* background-color: #00a76b; */
-    width: auto;
-    height: auto;
+    width: 102%;
+    height: 102%;
     
-
-
 }
+
+
 
 .food{
     background-image: url("../img/food.svg");
     width: 100%;
     background-size: 100% 100%;
+    transition: all 0.5s ease-in-out;
+
 
 }
+
+
+
+
+
+
+
 .tail{
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -184,7 +193,9 @@ dialog::backdrop{
     height: calc(248px - 1.2rem);
     display: grid;
 
-    gap: 8px;
+    gap: 6px;
+
+
 }
 
 
@@ -267,29 +278,14 @@ dialog::backdrop{
     color: #eaeeef;
 }
 
-.line{
+
+
+.line,.line2{
     position: absolute;
 	z-index: 0;
 	background: #666;
 	border-radius: 8px;
 	transition: all 0.6s ease-in-out;
-    /* width: clamp(15.7%, 5vw + 13%, 18.3%); */
-    width: 15.7%;
-
-    /* height: 54px; */
-    
-}
-
-
-.line2{
-    position: absolute;
-	z-index: 0;
-	background: #666;
-	border-radius: 8px;
-	transition: all 0.6s ease-in-out;
-    /* width: clamp(13.9%, 5vw + 10%, 17.9%); */
-    width: 13.9%;
-    /* height: 54px; */
 }
 
 
@@ -318,8 +314,6 @@ dialog::backdrop{
     
         
     }
-
-
     .pop-up{
         width: 96vmin;
     }
@@ -328,12 +322,6 @@ dialog::backdrop{
         margin-left: auto;
         transform: translateX(-6%);
     
-    }
-    .line{
-        width:18.3%;
-    }
-    .line2{
-        width:17.9%;
     }
 }
 

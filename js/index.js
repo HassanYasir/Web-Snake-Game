@@ -134,7 +134,7 @@ function createSnakeElement(index,x,y){
 
     // if localstorage does not have the setting data then setting the default image to head
     if(!opt){
-      snakeElement.style.backgroundImage = `url("../img/snake-head.svg")`;
+      snakeElement.style.backgroundImage = `url("./img/snake-head.svg")`;
     }else{
       
       snakeElement.style.backgroundImage = `url("${opt}")`;

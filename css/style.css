@@ -4,11 +4,24 @@
     margin: 0;
 }
 
-/* animations for game  */
+/* variables  */
+:root{
+    --body-bg-color:#222;
+    --snake-color:#5876ba;
+    --board-before:#aad154;
+    --score-container-color:#4a752c;
+    --board-border-color:#578a34;
+    --snake-glow:"";
+    --food-glow:#2222222d;
+    --popup-button:#F8A300;
+    --popup-button-hover:#F4C500;
+    --theme-btn-glow:#fcd362c3;
+    --board-bg-image:url("../img/board.svg");
+}
 
 
 body{
-    background-color: #222;
+    background-color: var(--body-bg-color);
     overflow-y: hidden;
 }
 .game-body{
@@ -27,7 +40,7 @@ body{
 
 .score-container{
     padding-block: 0.5rem;
-    background-color: #4a752c;
+    background-color: var(--score-container-color);
     display: flex;
     margin-inline: auto;
     border-top-right-radius: 5px;
@@ -48,6 +61,36 @@ body{
     width: 33px;
 }
 
+.theme-changer{
+    margin-left: auto;
+    margin-right: 1.4rem;
+    filter: drop-shadow(0 0 0.15rem var(--theme-btn-glow));
+    transition: all 0.4s ease-in-out;
+
+    
+}
+.theme-changer:hover{
+    cursor: pointer;
+    filter: drop-shadow(0 0 0.27rem var(--theme-btn-glow));
+
+    /* animation: rotate 0.4s ease-in-out; */
+
+
+
+}
+
+@keyframes rotate {
+    0%{
+        transform: rotate(0deg);
+    }
+    92%{
+        opacity: 0.7;
+    }
+    100%{
+        transform: rotate(90deg);
+        opacity: 1;
+    }
+}
 
 #scoreBox,
 #hiscoreBox{
@@ -60,10 +103,10 @@ body{
 
 #board{
    
-    background-image: url("../img/board.svg");
+    background-image: var(--board-bg-image);
     width: 87.2vmin;
     height: 87.2vmin;
-    border: 10px solid #578a34;
+    border: 10px solid var(--board-border-color);
     display: grid;
     grid-template-rows: repeat(18, 1fr);
     transition: all 0.9s ease-in-out;
@@ -77,7 +120,7 @@ body{
 
 #board::before{
     content: "";
-    background-color: #aad154;
+    background-color: var(--board-before);
     width: 87vmin;
     height: 87vmin;
     position: absolute;
@@ -92,14 +135,16 @@ body{
     background-image: url("../img/snake-head.svg");
     background-repeat: no-repeat;
     background-size: 102% 102%;
+    filter: drop-shadow(0 0 0.35rem var(--snake-glow));
 
 }
 
 .snake{
 
-    background-color: #5876ba;
+    background-color: var(--snake-color);
     /* background-color: #D21404; */
     /* background-color: #00a76b; */
+    filter: drop-shadow(0 0 0.35rem var(--snake-glow));
     width: 102%;
     height: 102%;
     
@@ -111,6 +156,8 @@ body{
     background-image: url("../img/food.svg");
     width: 100%;
     background-size: 100% 100%;
+    filter: drop-shadow(0 3.5px 0.15rem var(--food-glow));
+
 
 }
 .tail{
@@ -226,12 +273,6 @@ dialog::backdrop{
 }
 
 
-.selectBox button:hover{
-    background-color: #F4C500;
-    color: #eaeeef;
-    cursor: pointer;
-
-}
 .preview img,.selectBox{
     border-radius: 1rem;
 
@@ -253,7 +294,7 @@ dialog::backdrop{
     border: none;
     padding-block:0.56rem ;
     border-radius: 0.6rem;
-    background-color: #F8A300;
+    background-color: var(--popup-button);
     color: #E7F5F8;
     outline: none;
     box-shadow: 5px 7px 1px #5b4b315c;
@@ -265,7 +306,7 @@ dialog::backdrop{
 }
 .opt-container button:hover{
     box-shadow: 2px 2px 1px #5b4b3193;
-    background-color: #F4C500;
+    background-color: var(--popup-button-hover);
     color: #eaeeef;
 }
 

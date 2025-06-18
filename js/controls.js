@@ -62,27 +62,29 @@ function handleSwipe() {
 
 export function handleControl(key){
     if(!gameEnd){
-        moveSound.play();
+        
       
         if(key === "ArrowUp" && window.inputDir.y !== 1){  
             window.inputDir.x = 0;
             window.inputDir.y = -1;
-            
+            moveSound.play();
         }
         if(key === "ArrowDown" && window.inputDir.y !== -1){  
             window.inputDir.x = 0;
             window.inputDir.y = 1;
+            moveSound.play();
             
         }
         if(key === "ArrowLeft" && window.inputDir.x !== 1){  
             window.inputDir.x = -1;
             window.inputDir.y = 0;
+            moveSound.play();
             
         }
         if(key === "ArrowRight" && window.inputDir.x !== -1){  
             window.inputDir.x = 1;
             window.inputDir.y = 0;
-            
+            moveSound.play();
         }
     }
         

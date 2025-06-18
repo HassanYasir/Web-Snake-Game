@@ -26,6 +26,39 @@ let speed = 6;
 if (localStorage.getItem("Speed")) {
   speed = localStorage.getItem("Speed");
 }
+let theme = "light";
+if (localStorage.getItem("theme")) {
+  theme = localStorage.getItem("theme");
+}
+
+// theme config variables 
+// ["--snake-glow","#22222200"],
+
+let lightThemeConfig = [
+  ["--body-bg-color","#222"],
+  ["--board-before","#aad154"],
+  ["--score-container-color","#4a752c"],
+  ["--board-border-color","#578a34"],
+  ["--food-glow","#2222222d"],
+  ["--snake-glow",""],
+  ["--popup-button","#F8A300"],
+  ["--popup-button-hover","#F4C500"],
+  ["--theme-btn-glow","#fcd362c3"],
+  ["--board-bg-image",'url("../img/board.svg")']
+];
+let darkThemeConfig = [
+  ["--body-bg-color","#333"],
+  ["--board-before","#444"],
+  ["--score-container-color","#262428"],
+  ["--board-border-color","#2c2730"],
+  ["--food-glow","#f04846ed"],
+  ["--snake-glow",""],
+  ["--popup-button","#7077A1"],
+  ["--popup-button-hover","#424769"],
+  ["--theme-btn-glow","rgba(238, 240, 240, 0.899)"],
+  ["--board-bg-image",'url("../img/board-dark.svg")']
+];
+
 let score = 0;
 export let gameEnd = false;
 let hiscoreval;
@@ -106,17 +139,22 @@ function changeHeadDir(head) {
 
 function changeSnakeColor(opt) {
   let color;
+  let glowcolor;
   switch (opt) {
     case "./img/snake-head.svg":
       color = "#5876ba";
+      glowcolor = "#5875bad9";
       break;
     case "./img/snake-head-purple.svg":
       color = "#7a49e5";
+      glowcolor = "#7a49e5f2";
       break;
     case "./img/snake-head-green.svg":
       color = "#00a76b";
+      glowcolor = "#00a76ae4";
       break;
   }
+  darkThemeConfig[5][1] = glowcolor;
   return color;
 }
 
@@ -153,7 +191,9 @@ function createSnakeElement(index,x,y){
     // changing snake color according to setting
     let opt = localStorageHasData("Snake");
     let color = changeSnakeColor(opt);
-    snakeElement.style.backgroundColor = color;
+    document.documentElement.style.setProperty('--snake-color', color);
+
+
   }
   return snakeElement;
 }
@@ -287,4 +327,66 @@ window.addEventListener("keydown", (e) => {
   handleControl(e.key);
 });
 
-// for endingpopup events
+// for changing theme
+
+
+let themeButton = document.querySelector(".theme-changer");
+
+
+const setThemeConfig = (theme) => {
+
+  let arr = [];
+  if(theme === 'light'){
+    arr = darkThemeConfig;
+  }else{
+    arr = lightThemeConfig;
+  }
+  console.log(arr)
+  for(let index in arr){
+    document.documentElement.style.setProperty(arr[index][0],arr[index][1]);
+  }
+}
+
+const themeChangeHandler = ()=>{
+  themeButton.style.animation = "rotate 0.4s ease-in-out";
+
+
+  setTimeout(()=>{
+    setThemeConfig(theme);
+    if(theme === "light"){
+      themeButton.children[0].src = "./img/dark-theme.svg";
+      themeButton.style.animation = "";
+      theme = "dark";
+      localStorage.setItem("theme","dark");
+    }else{
+      themeButton.children[0].src = "./img/light-theme.svg";
+      themeButton.style.animation = "";
+      theme = "light";
+      localStorage.setItem("theme","light");
+      
+    }
+
+  },405)
+}
+
+const themeSetter = () => {
+  console.log(theme)
+  setTimeout(()=>{
+    if(theme === "light"){
+      themeButton.children[0].src = "./img/light-theme.svg";
+      setThemeConfig("dark");
+    }else{
+      themeButton.children[0].src = "./img/dark-theme.svg";
+      setThemeConfig("light");
+      
+    }
+  },150)
+
+  console.log("i run")
+}
+
+document.addEventListener("DOMContentLoaded",themeSetter);
+
+themeButton.addEventListener('click',themeChangeHandler)
+
+

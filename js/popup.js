@@ -20,6 +20,8 @@ let popup = `<div class="selectBox">
                               </div>
                               </div>`
 
+import {localStorageHasData} from "./index.js";                             
+
 const showPopUp = (mesg) =>{
   let parentElem = document.getElementsByTagName("dialog")[0];
   let element = document.createElement("div");
@@ -62,7 +64,7 @@ export const showEndingPopup = ()=>{
     showPopUp(`<i class="fa-regular fa-circle-check green"></i>  item selected and setting saved `);
   }
 
-  function saveSlectionCoordinates(item,element,name){
+  function saveSlectionCoordinates(item,element,settings){
     const rect = item.getBoundingClientRect();
     const containerRect = element.getBoundingClientRect();
     const offsetX = rect.left - containerRect.left;
@@ -73,7 +75,8 @@ export const showEndingPopup = ()=>{
       "offsetY" : offsetY
     }
     const Jsoncoordinates = JSON.stringify(coordinates);
-    localStorage.setItem(name, Jsoncoordinates);
+    // localStorage.setItem(settings, Jsoncoordinates);
+    saveSettings(settings,Jsoncoordinates);
 
   }
 
@@ -83,10 +86,11 @@ export const showEndingPopup = ()=>{
     line2.style.width = `${slectionWidth+5}px`;
     line1.style.height = `${line1.getBoundingClientRect().width}px`;
     line2.style.height = `${line2.getBoundingClientRect().width}px`;
-    let data = [localStorage.getItem("offset1"),localStorage.getItem("offset2")];
-    if(localStorage.getItem("offset1")){
-      let offset1 = JSON.parse(data[0]);
-      let offset2 = JSON.parse(data[1]);
+    
+    if(localStorageHasData("offset1") || localStorageHasData("offset2")){
+
+      let offset1 = JSON.parse(localStorageHasData("offset1"));
+      let offset2 = JSON.parse(localStorageHasData("offset2"));
       line1.style.transform = `translate(${offset1["offsetX"]}px, ${offset1["offsetY"]}px)`;
       line2.style.transform = `translate(${offset2["offsetX"]}px, ${offset2["offsetY"]}px)`;
     }

@@ -5,7 +5,7 @@
 }
 
 /* variables  */
-:root{
+:root[theme-data="light"]{
     --body-bg-color:#222;
     --snake-color:#5876ba;
     --board-before:#aad154;
@@ -15,8 +15,23 @@
     --food-glow:#2222222d;
     --popup-button:#F8A300;
     --popup-button-hover:#F4C500;
+    --popup-button-shadow:#5b4b315c;
     --theme-btn-glow:#fcd362c3;
     --board-bg-image:url("../img/board.svg");
+}
+:root[theme-data="dark"]{
+    --body-bg-color:#333;
+    --snake-color:#5876ba;
+    --board-before:#444;
+    --score-container-color:#262428;
+    --board-border-color:#2c2730;
+    --snake-glow:"";
+    --food-glow:#f04846ed;
+    --popup-button:#7077A1;
+    --popup-button-hover:#424769;
+    --popup-button-shadow:#5b4b315c;
+    --theme-btn-glow:rgba(238, 240, 240, 0.899);
+    --board-bg-image:url("../img/board-dark.svg");
 }
 
 
@@ -25,7 +40,7 @@ body{
     overflow-y: hidden;
 }
 .game-body{
-    /* background: url("../img/bg.jpg");  */
+
     min-height: 100vh;
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
@@ -33,7 +48,7 @@ body{
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    box-shadow: 2px 2px ;
+
     
 
 }
@@ -65,7 +80,7 @@ body{
     margin-left: auto;
     margin-right: 1.4rem;
     filter: drop-shadow(0 0 0.15rem var(--theme-btn-glow));
-    transition: all 0.4s ease-in-out;
+    /* transition: all 0.4s ease-in-out; */
 
     
 }
@@ -108,12 +123,13 @@ body{
     height: 87.2vmin;
     border: 10px solid var(--board-border-color);
     display: grid;
+    transition: grid-template-columns 0.8s ease-in-out, grid-template-rows 0.8s ease-in-out,transform grid-template-rows 0.8s ease-in-out;
     grid-template-rows: repeat(18, 1fr);
-    transition: all 0.9s ease-in-out;
     grid-template-columns: repeat(18, 1fr);
     box-shadow: 2px 10px 5px 2px #31313034;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
+
 
     
 }
@@ -297,7 +313,7 @@ dialog::backdrop{
     background-color: var(--popup-button);
     color: #E7F5F8;
     outline: none;
-    box-shadow: 5px 7px 1px #5b4b315c;
+    box-shadow: 5px 7px 1px var(--popup-button-shadow);
     transition: all 0.4s ease-in-out;
     display: flex;
     align-items: center;
@@ -305,9 +321,10 @@ dialog::backdrop{
     gap: 0.8rem;
 }
 .opt-container button:hover{
-    box-shadow: 2px 2px 1px #5b4b3193;
+    box-shadow: 2px 2px 1px #1e1e1e93;
     background-color: var(--popup-button-hover);
     color: #eaeeef;
+    cursor: pointer;
 }
 
 
@@ -377,3 +394,4 @@ dialog::backdrop{
 .green{
     color: #14b711;
 }
+

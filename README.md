@@ -1,10 +1,4 @@
 # Snake Game on Web
-<span>
-<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_preview.png' alt='game-view' width='450'  align='center'/>
-<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_ending.png' alt='game-view' width='450'  align='center'/>
-</span>
-
-
 
 **Welcome to the Web-Based Snake Game! This project is a classic implementation of the Snake game, where players control a snake to collect food while avoiding collisions with the walls and itself..**
 
@@ -24,6 +18,15 @@ __Technologies Used__
 * Responsive Design:Playable on various devices (desktop, tablet, mobile).
 * User-Friendly Interface:Simple and intuitive layout with touch swipe controlles for smart phones.
 * Dynamic Game Logic:Saves high score on localstorage of your browser so the highscore will retain its value.
+* Dark and light themes:You can set theme according to your preference.
+
+## Game Gallery
+
+<span>
+<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_preview.png' alt='game-view' width='400'  align='center'/>
+<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_preview_dark.png' alt='game-view' width='400'  align='center'/>
+<img src='https://raw.githubusercontent.com/HassanYasir/Web-Snake-Game/refs/heads/main/img/Readme%20content/Game_ending.png' alt='game-view' width='400'  align='center'/>
+</span>
 
 ## Installation
 
